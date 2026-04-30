@@ -79,6 +79,7 @@ python -m pip install --upgrade pip
 python -m pip install "$WHEEL_DIR/$WHEEL_NAME"
 # Reinstall with extras now that the dist name is known to pip.
 python -m pip install "powston-simulator[examples]"
+python -m pip install aemo_to_tariff
 
 cat <<'EOF'
 
