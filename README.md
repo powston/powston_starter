@@ -10,6 +10,16 @@ locally.
 2. A `POWSTON_API_KEY` (ask your Powston contact if you don't have one).
 3. A GitHub account.
 
+## Try the quickstart notebook first
+
+Open `quickstart.ipynb` in the Codespace and run cells top-to-bottom.
+It pulls a week of your meter data, runs **one** simulation against your
+live PowstonAutoTuned rule, and plots the result. Takes about 10 seconds
+once the wheel is installed.
+
+This is the recommended first-run smoke test — it confirms your API key
+and inverter ID work before you commit to a full tune.
+
 ## Run a tune
 
 1. **Fork this repo** into your own GitHub account.
@@ -61,6 +71,12 @@ This always pulls the latest wheel for your platform from the Powston API.
   the Codespace after saving the secret.
 - **`curl ... 401`.** Your API key is invalid or has been revoked. Check it
   in your Powston account dashboard.
+- **`curl ... 404` with `{"detail":"No wheel found ..."}`.** The API
+  authenticated you but no wheel matches `py=cp312&platform=linux_x86_64`
+  for your account. Common cause: the key was pasted **wrapped in quotes**
+  when setting the Codespaces secret — the literal quote characters get
+  sent in the Authorization header. Edit the secret, save the value with
+  no surrounding `"` or `'`, then stop and recreate the Codespace.
 - **`curl ... 404`.** No wheel is available for this Python version yet.
   The default targets cp312 on Linux x86_64 (Codespaces). If you've started
   the Codespace with a different Python, override `PYTHON_TAG` in

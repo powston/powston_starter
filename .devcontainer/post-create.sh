@@ -26,6 +26,15 @@ EOF
     exit 1
 fi
 
+# Codespaces secrets store the raw string — if the user wrapped the value in
+# quotes when pasting, the literal quote chars get sent in the Authorization
+# header and the API rejects them. Strip wrapping quotes defensively.
+if [[ "$POWSTON_API_KEY" =~ ^[\"\'].*[\"\']$ ]]; then
+    echo "Warning: stripping wrapping quotes from POWSTON_API_KEY." >&2
+    POWSTON_API_KEY="${POWSTON_API_KEY#[\"\']}"
+    POWSTON_API_KEY="${POWSTON_API_KEY%[\"\']}"
+fi
+
 API_BASE="${POWSTON_API_BASE:-https://app.powston.com}"
 WHEEL_API_PATH="${WHEEL_API_PATH:-/api/v1/wheels/latest}"
 PYTHON_TAG="${PYTHON_TAG:-cp312}"
@@ -75,12 +84,19 @@ PY
 
 mv "$TMP" "$WHEEL_DIR/$WHEEL_NAME"
 
+# Working directories run-site-sim.py writes to. `tune_logs/` and `sims/`
+# are created lazily by the script, but `cache/` is written to without an
+# `os.makedirs`, so create all three up front.
+mkdir -p cache tune_logs sims
+
 echo ">> Installing $WHEEL_NAME + [examples] extras"
 python -m pip install --upgrade pip
 python -m pip install "$WHEEL_DIR/$WHEEL_NAME"
 # Reinstall with extras now that the dist name is known to pip.
 python -m pip install "powston-simulator[examples]"
 python -m pip install aemo_to_tariff
+# So `quickstart.ipynb` opens cleanly without VS Code prompting for kernels.
+python -m pip install ipykernel
 
 cat <<'EOF'
 
