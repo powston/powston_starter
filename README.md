@@ -56,9 +56,10 @@ This always pulls the latest wheel for your platform from the Powston API.
   the Codespace after saving the secret.
 - **`curl ... 401`.** Your API key is invalid or has been revoked. Check it
   in your Powston account dashboard.
-- **`curl ... 404`.** No wheel is available for this platform / Python
-  combination yet. Override `PYTHON_TAG` or `PLATFORM` in
-  `.devcontainer/devcontainer.json` if you know which is published.
+- **`curl ... 404`.** No wheel is available for this Python version yet.
+  The default targets cp312 on Linux x86_64 (Codespaces). If you've started
+  the Codespace with a different Python, override `PYTHON_TAG` in
+  `.devcontainer/devcontainer.json`.
 - **`No data available for inverter ...`.** The Powston account associated
   with your API key doesn't have meter data for that inverter ID, or the
   date range is outside what's recorded.
