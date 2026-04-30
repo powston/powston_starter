@@ -19,6 +19,12 @@ locally.
 3. **Open a Codespace.** Click the green *Code* button → *Codespaces* →
    *Create codespace on main*. The first start takes a couple of minutes
    while it downloads the compiled wheel and installs dependencies.
+   
+   ```bash
+   export POWSTON_API_KEY=your_api_key_here
+   curl --fail --location     -H "Authorization: Bearer $POWSTON_API_KEY"     -o /tmp/powston-wheels/powston_simulator.whl     "/api/v1/wheels/latest?platform=linux_x86_64&py=cp312"
+   pip install /tmp/powston-wheels/powston_simulator.whl
+   ```
 4. **Run the tuner.** In the Codespace terminal:
 
    ```
