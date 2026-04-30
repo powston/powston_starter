@@ -27,6 +27,7 @@ EOF
 fi
 
 API_BASE="${POWSTON_API_BASE:-https://app.powston.com}"
+WHEEL_API_PATH="${WHEEL_API_PATH:-/api/v1/wheels/latest}"
 PYTHON_TAG="${PYTHON_TAG:-cp312}"
 PLATFORM="${PLATFORM:-linux_x86_64}"
 WHEEL_DIR="${WHEEL_DIR:-/tmp/powston-wheels}"
@@ -34,7 +35,7 @@ WHEEL_DIR="${WHEEL_DIR:-/tmp/powston-wheels}"
 mkdir -p "$WHEEL_DIR"
 rm -f "$WHEEL_DIR"/*.whl "$WHEEL_DIR"/.download.tmp
 
-URL="${API_BASE}/api/wheels?platform=${PLATFORM}&py=${PYTHON_TAG}"
+URL="${API_BASE}${WHEEL_API_PATH}?platform=${PLATFORM}&py=${PYTHON_TAG}"
 TMP="$WHEEL_DIR/.download.tmp"
 
 echo ">> Fetching wheel from ${URL}"
